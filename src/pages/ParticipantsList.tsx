@@ -2,10 +2,17 @@ import React, { useEffect, useState } from "react";
 import { fetchDeltagere } from "../service/apiFacade";
 import { DeltagerProps } from "../service/DeltagerProps";
 import { NavLink } from "react-router-dom";
+import DropdownFilter from "../components/DropDownFiltre";
 
 function ParticipantsList() {
     const [participants, setParticipants] = useState<DeltagerProps[]>([]);
     const [search, setSearch] = useState("");
+    const [sortColumn, setSortColumn] = useState<keyof DeltagerProps>("navn");
+    const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+    const [genderFilter, setGenderFilter] = useState<string | null>(null);
+    const [ageFilter, setAgeFilter] = useState<string | null>(null);
+    const [clubFilter, setClubFilter] = useState<string | null>(null);
+    const [disciplineFilter, setDisciplineFilter] = useState<string | null>(null);
 
     useEffect(() => {
         fetchDeltagere().then(setParticipants).catch(console.error);
@@ -15,30 +22,111 @@ function ParticipantsList() {
         setSearch(event.target.value);
     };
 
-    const filteredParticipants = participants.filter((p) => p.navn.toLowerCase().includes(search.toLowerCase()));
+    const handleSort = (column: keyof DeltagerProps) => {
+        if (sortColumn === column) {
+            setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+        } else {
+            setSortColumn(column);
+            setSortOrder("asc");
+        }
+    };
+
+    const sortedParticipants = [...participants].sort((a, b) => {
+        if (a[sortColumn] < b[sortColumn]) {
+            return sortOrder === "asc" ? -1 : 1;
+        }
+        if (a[sortColumn] > b[sortColumn]) {
+            return sortOrder === "asc" ? 1 : -1;
+        }
+        return 0;
+    });
+
+    const filteredParticipants = sortedParticipants.filter((p) => {
+        return (
+            p.navn.toLowerCase().includes(search.toLowerCase()) &&
+            (genderFilter ? p.køn === genderFilter : true) &&
+            (ageFilter
+                ? p.alder >= parseInt(ageFilter.split("-")[0]) && p.alder <= parseInt(ageFilter.split("-")[1])
+                : true) &&
+            (clubFilter ? p.klub === clubFilter : true) &&
+            (disciplineFilter ? p.resultater.some((r) => r.disciplin.navn === disciplineFilter) : true)
+        );
+    });
 
     return (
         <div className="container">
             <div className="row mt-5">
-                <div className="col-md-8">
+                <div className="col-md-5 d-flex">
+                    <DropdownFilter
+                        title="Gender"
+                        options={[
+                            { label: "All", value: null },
+                            { label: "Man", value: "man" },
+                            { label: "Kvinde", value: "kvinde" },
+                        ]}
+                        onFilterChange={(value) => setGenderFilter(value)}
+                    />
+                    <DropdownFilter
+                        title="Age Group"
+                        options={[
+                            { label: "All", value: null },
+                            { label: "6-9", value: "6-9" },
+                            { label: "10-13", value: "10-13" },
+                            { label: "14-22", value: "14-22" },
+                            { label: "23-40", value: "23-40" },
+                            { label: "41+", value: "41-100" },
+                        ]}
+                        onFilterChange={(value) => setAgeFilter(value)}
+                    />
+                    <DropdownFilter
+                        title="Club"
+                        options={[
+                            { label: "All", value: null },
+                            { label: "Ølstykke", value: "ølstykke" },
+                            { label: "Another Club", value: "another club" },
+                        ]}
+                        onFilterChange={(value) => setClubFilter(value)}
+                    />
+                    <DropdownFilter
+                        title="Discipline"
+                        options={[
+                            { label: "All", value: null },
+                            { label: "400-meterløb", value: "400-meterløb" },
+                            { label: "Længdespring", value: "Længdespring" },
+                            { label: "Hammerkast", value: "Hammerkast" },
+                        ]}
+                        onFilterChange={(value) => setDisciplineFilter(value)}
+                    />
+                </div>
+                <div className="col-md-3 my-auto">
+                    <p>
+                        Active Filters:
+                        {genderFilter && <span className="badge bg-primary mx-1">{genderFilter}</span>}
+                        {ageFilter && <span className="badge bg-primary mx-1">{ageFilter}</span>}
+                        {clubFilter && <span className="badge bg-primary mx-1">{clubFilter}</span>}
+                        {disciplineFilter && <span className="badge bg-primary mx-1">{disciplineFilter}</span>}
+                    </p>
+                </div>
+                <div className="col-md-2">
                     <h1 className="text-end">Deltagere</h1>
                 </div>
-                <div className="col-md-4  my-auto">
+                <div className="col-md-2 my-auto">
                     <input
                         type="text"
                         placeholder="Search by name"
                         value={search}
                         onChange={handleSearch}
-                        className="form-control "
+                        className="form-control"
                     />
                 </div>
-                <table className="table table-striped">
+
+                <table className="table table-striped mt-3">
                     <thead>
                         <tr>
-                            <th>Navn</th>
-                            <th>Køn</th>
-                            <th>Alder</th>
-                            <th>Klub</th>
+                            <th onClick={() => handleSort("navn")}>Navn</th>
+                            <th onClick={() => handleSort("køn")}>Køn</th>
+                            <th onClick={() => handleSort("alder")}>Alder</th>
+                            <th onClick={() => handleSort("klub")}>Klub</th>
                             <th>Detaljer</th>
                         </tr>
                     </thead>
