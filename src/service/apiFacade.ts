@@ -307,4 +307,12 @@ async function deleteResultat(id: number) {
 export { fetchDeltagere, fetchDeltager, fetchDeltagerNavn, createDeltager, updateDeltager, deleteDeltager };
 
 // Export metode for resultater
-export { fetchResultater, fetchResultat, fetchResultaterDisciplin, createResultat, createResultater, updateResultat, deleteResultat };
+export {
+    fetchResultater,
+    fetchResultat,
+    fetchResultaterDisciplin,
+    createResultat,
+    createResultater,
+    updateResultat,
+    deleteResultat,
+};

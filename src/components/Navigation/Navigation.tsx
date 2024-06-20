@@ -37,6 +37,16 @@ function Navigation() {
                                 Opret deltager
                             </Link>
                         </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/results">
+                                Resultater
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/results/new">
+                                Opret nye resultater
+                            </Link>
+                        </li>
                     </ul>
                 </div>
             </nav>

@@ -1,11 +1,13 @@
-import { DisciplinProps } from "./DisciplinProps";
-
+// ResultatProps.ts
 export interface ResultatProps {
     id?: number;
     resultattype: string;
     dato: string;
-    resultatvalue: number;
-    deltager_id: number;
-    diciplin_id: number;
-    disciplin?: DisciplinProps;
+    resultatvalue: string;
+    deltager?: {
+        id: number;
+    };
+    disciplin?: {
+        id: number;
+    };
 }
