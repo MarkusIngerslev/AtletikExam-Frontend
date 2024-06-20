@@ -1,4 +1,5 @@
 import { DeltagerProps } from "./DeltagerProps";
+import { ResultatProps } from "./ResultatProps";
 
 const endpoint = "http://localhost:8080";
 
@@ -180,11 +181,111 @@ async function fetchResultat(id: number) {
     }
 }
 
-// Hent enkelt resultater ud fra en disciplin
+// Hent resultater ud fra en disciplin
 async function fetchResultaterDisciplin(disciplin: string) {
     const url = `${endpoint}/api/resultater/disciplin/${disciplin}`;
     try {
         const res = await fetch(url);
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        const data = await res.json();
+
+        // Tjek at data er korrekt
+        console.log(data);
+        // Data bliver returneret
+        return data;
+    } catch (error) {
+        console.error("An error occurred: ", error);
+        throw error;
+    }
+}
+
+// Opret enkelt resultat
+async function createResultat(resultat: ResultatProps) {
+    const url = `${endpoint}/api/resultater`;
+    try {
+        const res = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(resultat),
+        });
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        const data = await res.json();
+
+        // Tjek at data er korrekt
+        console.log(data);
+        // Data bliver returneret
+        return data;
+    } catch (error) {
+        console.error("An error occurred: ", error);
+        throw error;
+    }
+}
+
+// Opret flere resultater fra liste
+async function createResultater(resultater: ResultatProps[]) {
+    const url = `${endpoint}/api/resultater/flere`;
+    try {
+        const res = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(resultater),
+        });
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        const data = await res.json();
+
+        // Tjek at data er korrekt
+        console.log(data);
+        // Data bliver returneret
+        return data;
+    } catch (error) {
+        console.error("An error occurred: ", error);
+        throw error;
+    }
+}
+
+// Opdater enkelt resultat
+async function updateResultat(resultat: ResultatProps) {
+    const url = `${endpoint}/api/resultater/${resultat.id}`;
+    try {
+        const res = await fetch(url, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(resultat),
+        });
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        const data = await res.json();
+
+        // Tjek at data er korrekt
+        console.log(data);
+        // Data bliver returneret
+        return data;
+    } catch (error) {
+        console.error("An error occurred: ", error);
+        throw error;
+    }
+}
+
+// Slet et resultat
+async function deleteResultat(id: number) {
+    const url = `${endpoint}/api/resultater/${id}`;
+    try {
+        const res = await fetch(url, {
+            method: "DELETE",
+        });
         if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);
         }
@@ -206,4 +307,4 @@ async function fetchResultaterDisciplin(disciplin: string) {
 export { fetchDeltagere, fetchDeltager, fetchDeltagerNavn, createDeltager, updateDeltager, deleteDeltager };
 
 // Export metode for resultater
-export { fetchResultater, fetchResultat };
+export { fetchResultater, fetchResultat, fetchResultaterDisciplin, createResultat, createResultater, updateResultat, deleteResultat };
