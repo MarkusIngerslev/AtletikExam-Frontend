@@ -9,6 +9,8 @@ function NewParticipant() {
         alder: 0,
         klub: "",
     });
+    const [createMessage, setCreateMessage] = useState("");
+    const [createSuccess, setCreateSuccess] = useState(false);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
@@ -20,12 +22,18 @@ function NewParticipant() {
         createDeltager(formData)
             .then(() => {
                 // redirect or show success message
+                setCreateMessage("Participant created successfully");
+                setCreateSuccess(true);
+                setTimeout(() => {
+                    setCreateSuccess(false);
+                }, 5000);
             })
             .catch(console.error);
     };
 
     return (
         <div className="container">
+            {createSuccess && <h4 className="text-center text-success my-5">{createMessage}</h4>}
             <h1>New Participant</h1>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">

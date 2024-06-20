@@ -19,40 +19,46 @@ function ParticipantsList() {
 
     return (
         <div className="container">
-            <h1>Participants</h1>
-            <input
-                type="text"
-                placeholder="Search by name"
-                value={search}
-                onChange={handleSearch}
-                className="form-control mb-3"
-            />
-            <table className="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Navn</th>
-                        <th>Køn</th>
-                        <th>Alder</th>
-                        <th>Klub</th>
-                        <th>Detaljer</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {filteredParticipants.map((participant) => (
-                        <tr key={participant.id}>
-                            <td>{participant.navn}</td>
-                            <td>{participant.køn}</td>
-                            <td>{participant.alder}</td>
-                            <td>{participant.klub}</td>
-                            <td>
-                                <NavLink to={`/participants/${participant.id}`} className="btn btn-primary">
-                                    Details
-                                </NavLink>
-                            </td>
+            <div className="row mt-5">
+                <div className="col-md-8">
+                    <h1 className="text-end">Deltagere</h1>
+                </div>
+                <div className="col-md-4  my-auto">
+                    <input
+                        type="text"
+                        placeholder="Search by name"
+                        value={search}
+                        onChange={handleSearch}
+                        className="form-control "
+                    />
+                </div>
+                <table className="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Navn</th>
+                            <th>Køn</th>
+                            <th>Alder</th>
+                            <th>Klub</th>
+                            <th>Detaljer</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {filteredParticipants.map((participant) => (
+                            <tr key={participant.id}>
+                                <td>{participant.navn}</td>
+                                <td>{participant.køn}</td>
+                                <td>{participant.alder}</td>
+                                <td>{participant.klub}</td>
+                                <td>
+                                    <NavLink to={`/participants/${participant.id}`} className="btn btn-primary">
+                                        Detaljer
+                                    </NavLink>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }

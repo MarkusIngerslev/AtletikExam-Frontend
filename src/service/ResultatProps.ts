@@ -1,3 +1,5 @@
+import { DisciplinProps } from "./DisciplinProps";
+
 export interface ResultatProps {
     id?: number;
     resultattype: string;
@@ -5,4 +7,5 @@ export interface ResultatProps {
     resultatvalue: number;
     deltager_id: number;
     diciplin_id: number;
+    disciplin?: DisciplinProps;
 }
