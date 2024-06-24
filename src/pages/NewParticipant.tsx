@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { createDeltager } from "../service/apiFacade";
 import { DeltagerProps } from "../service/DeltagerProps";
+import DropDownClub from "../components/DropDownClub";
 
 function NewParticipant() {
     const [formData, setFormData] = useState<DeltagerProps>({
@@ -15,6 +16,10 @@ function NewParticipant() {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         setFormData({ ...formData, [name]: value });
+    };
+
+    const handleClubChange = (value: string) => {
+        setFormData({ ...formData, klub: value });
     };
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -34,7 +39,7 @@ function NewParticipant() {
     return (
         <div className="container">
             {createSuccess && <h4 className="text-center text-success my-5">{createMessage}</h4>}
-            <h1>New Participant</h1>
+            <h1>Ny Deltager</h1>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label>Name</label>
@@ -47,7 +52,7 @@ function NewParticipant() {
                     />
                 </div>
                 <div className="form-group">
-                    <label>Gender</label>
+                    <label>Køn</label>
                     <input
                         type="text"
                         name="køn"
@@ -57,7 +62,7 @@ function NewParticipant() {
                     />
                 </div>
                 <div className="form-group">
-                    <label>Age</label>
+                    <label>Alder</label>
                     <input
                         type="number"
                         name="alder"
@@ -66,18 +71,9 @@ function NewParticipant() {
                         className="form-control"
                     />
                 </div>
-                <div className="form-group">
-                    <label>Club</label>
-                    <input
-                        type="text"
-                        name="klub"
-                        value={formData.klub}
-                        onChange={handleChange}
-                        className="form-control"
-                    />
-                </div>
+                <DropDownClub klub={formData.klub} onChange={handleClubChange} />
                 <button type="submit" className="btn btn-primary mt-3">
-                    Submit
+                    Tilføj
                 </button>
             </form>
         </div>
