@@ -6,11 +6,16 @@ const ResultsList = () => {
     const [deltagere, setDeltagere] = useState<DeltagerProps[]>([]);
     const [editResult, setEditResult] = useState<ResultatProps | null>(null);
 
-    useEffect(() => {
-        const fetchData = async () => {
+    const fetchData = async () => {
+        try {
             const fetchedDeltagere = await fetchDeltagere();
             setDeltagere(fetchedDeltagere);
-        };
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
+    useEffect(() => {
         fetchData();
     }, []);
 
@@ -18,6 +23,7 @@ const ResultsList = () => {
         if (editResult) {
             const { name, value } = e.target;
             setEditResult({ ...editResult, [name]: value });
+            console.log(editResult);
         }
     };
 
@@ -40,13 +46,12 @@ const ResultsList = () => {
     };
 
     const handleDelete = async (id: number) => {
-        await deleteResultat(id);
-        setDeltagere(
-            deltagere.map((deltager) => ({
-                ...deltager,
-                resultater: deltager.resultater.filter((result) => result.id !== id),
-            }))
-        );
+        try {
+            await deleteResultat(id);
+            fetchData();
+        } catch (error) {
+            console.error("Error deleting result:", error);
+        }
     };
 
     return (
@@ -70,7 +75,12 @@ const ResultsList = () => {
                                 <td>{result.dato}</td>
                                 <td>{result.resultatvalue}</td>
                                 <td>
-                                    <button className="btn btn-warning" onClick={() => setEditResult(result)}>
+                                    <button
+                                        className="btn btn-warning"
+                                        onClick={() => {
+                                            setEditResult(result);
+                                        }}
+                                    >
                                         Rediger
                                     </button>
                                     <button className="btn btn-danger" onClick={() => handleDelete(result.id)}>

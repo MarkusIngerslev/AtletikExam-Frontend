@@ -289,12 +289,12 @@ async function deleteResultat(id: number) {
         if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);
         }
-        const data = await res.json();
+        const data = await res.text();
 
         // Tjek at data er korrekt
         console.log(data);
         // Data bliver returneret
-        return data;
+        return data ? JSON.parse(data) : {};
     } catch (error) {
         console.error("An error occurred: ", error);
         throw error;
