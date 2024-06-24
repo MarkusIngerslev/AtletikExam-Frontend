@@ -60,20 +60,22 @@ const ResultsList = () => {
                 <thead>
                     <tr>
                         <th>Deltager</th>
-                        <th>Resultattype</th>
+                        <th>Disciplin</th>
                         <th>Dato</th>
-                        <th>Resultatværdi</th>
+                        <th>Resultat</th>
                         <th>Handlinger</th>
                     </tr>
                 </thead>
                 <tbody>
                     {deltagere.map((deltager) =>
-                        deltager.resultater.map((result) => (
+                        deltager.resultater?.map((result) => (
                             <tr key={result.id}>
                                 <td>{deltager.navn}</td>
                                 <td>{result.resultattype}</td>
                                 <td>{result.dato}</td>
-                                <td>{result.resultatvalue}</td>
+                                <td>
+                                    {result.resultatvalue} {result.disciplin.resultattype}
+                                </td>
                                 <td>
                                     <button
                                         className="btn btn-warning"
@@ -83,6 +85,7 @@ const ResultsList = () => {
                                     >
                                         Rediger
                                     </button>
+                                    {"  "}
                                     <button className="btn btn-danger" onClick={() => handleDelete(result.id)}>
                                         Slet
                                     </button>

@@ -12,10 +12,10 @@ export interface ResultatProps {
 }
 
 export interface DeltagerProps {
-    id: number;
+    id?: number;
     navn: string;
     køn: string;
     alder: number;
     klub: string;
-    resultater: ResultatProps[];
+    resultater?: ResultatProps[];
 }

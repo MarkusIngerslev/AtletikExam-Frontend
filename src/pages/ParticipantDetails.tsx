@@ -70,7 +70,7 @@ function ParticipantDetails() {
                 <div className="col-md-6">
                     {isEditing ? (
                         <div>
-                            <h1>Edit Participant</h1>
+                            <h1>Rediger Deltager</h1>
                             <div className="form-group">
                                 <label>Name</label>
                                 <input
@@ -82,7 +82,7 @@ function ParticipantDetails() {
                                 />
                             </div>
                             <div className="form-group">
-                                <label>Gender</label>
+                                <label>Køn</label>
                                 <input
                                     type="text"
                                     name="køn"
@@ -92,7 +92,7 @@ function ParticipantDetails() {
                                 />
                             </div>
                             <div className="form-group">
-                                <label>Age</label>
+                                <label>Alder</label>
                                 <input
                                     type="number"
                                     name="alder"
@@ -102,7 +102,7 @@ function ParticipantDetails() {
                                 />
                             </div>
                             <div className="form-group">
-                                <label>Club</label>
+                                <label>Klub</label>
                                 <input
                                     type="text"
                                     name="klub"
@@ -132,23 +132,23 @@ function ParticipantDetails() {
                     ) : (
                         <div>
                             <h1>{participant.navn}</h1>
-                            <p>Gender: {participant.køn}</p>
-                            <p>Age: {participant.alder}</p>
-                            <p>Club: {participant.klub}</p>
+                            <p>Køn: {participant.køn}</p>
+                            <p>Alder: {participant.alder}</p>
+                            <p>Klub: {participant.klub}</p>
                             <button onClick={() => setIsEditing(true)} className="btn btn-secondary mt-3">
-                                Edit
+                                Rediger
                             </button>
                         </div>
                     )}
                 </div>
                 <div className="col-md-6">
-                    <h2>Results</h2>
+                    <h2>Resultater</h2>
                     <table className="table table-striped">
                         <thead>
                             <tr>
-                                <th>Discipline</th>
+                                <th>Disciplin</th>
                                 <th>Result</th>
-                                <th>Date</th>
+                                <th>Dat</th>
                             </tr>
                         </thead>
                         <tbody>

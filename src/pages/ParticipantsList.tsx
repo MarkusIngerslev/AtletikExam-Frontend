@@ -49,7 +49,7 @@ function ParticipantsList() {
                 ? p.alder >= parseInt(ageFilter.split("-")[0]) && p.alder <= parseInt(ageFilter.split("-")[1])
                 : true) &&
             (clubFilter ? p.klub === clubFilter : true) &&
-            (disciplineFilter ? p.resultater.some((r) => r.disciplin.navn === disciplineFilter) : true)
+            (disciplineFilter ? p.resultater && p.resultater.some((r) => r.disciplin.navn === disciplineFilter) : true)
         );
     });
 
@@ -58,16 +58,16 @@ function ParticipantsList() {
             <div className="row mt-5">
                 <div className="col-md-5 d-flex">
                     <DropdownFilter
-                        title="Gender"
+                        title="Køn"
                         options={[
                             { label: "All", value: null },
-                            { label: "Man", value: "man" },
+                            { label: "Mand", value: "mand" },
                             { label: "Kvinde", value: "kvinde" },
                         ]}
                         onFilterChange={(value) => setGenderFilter(value)}
                     />
                     <DropdownFilter
-                        title="Age Group"
+                        title="Alders gruppe"
                         options={[
                             { label: "All", value: null },
                             { label: "6-9", value: "6-9" },
@@ -79,16 +79,17 @@ function ParticipantsList() {
                         onFilterChange={(value) => setAgeFilter(value)}
                     />
                     <DropdownFilter
-                        title="Club"
+                        title="Klub"
                         options={[
                             { label: "All", value: null },
                             { label: "Ølstykke", value: "ølstykke" },
-                            { label: "Another Club", value: "another club" },
+                            { label: "Stenløse", value: "Stenløse" },
+                            { label: "Væksø", value: "Væksø" },
                         ]}
                         onFilterChange={(value) => setClubFilter(value)}
                     />
                     <DropdownFilter
-                        title="Discipline"
+                        title="Disciplin"
                         options={[
                             { label: "All", value: null },
                             { label: "400-meterløb", value: "400-meterløb" },
@@ -100,7 +101,7 @@ function ParticipantsList() {
                 </div>
                 <div className="col-md-3 my-auto">
                     <p>
-                        Active Filters:
+                        Aktive Filtre:
                         {genderFilter && <span className="badge bg-primary mx-1">{genderFilter}</span>}
                         {ageFilter && <span className="badge bg-primary mx-1">{ageFilter}</span>}
                         {clubFilter && <span className="badge bg-primary mx-1">{clubFilter}</span>}
