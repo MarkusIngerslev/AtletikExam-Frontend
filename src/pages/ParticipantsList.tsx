@@ -95,6 +95,7 @@ function ParticipantsList() {
                             { label: "400-meterløb", value: "400-meterløb" },
                             { label: "Længdespring", value: "Længdespring" },
                             { label: "Hammerkast", value: "Hammerkast" },
+                            { label: "Højdespring", value: "Højdespring" },
                         ]}
                         onFilterChange={(value) => setDisciplineFilter(value)}
                     />
@@ -128,6 +129,7 @@ function ParticipantsList() {
                             <th onClick={() => handleSort("køn")}>Køn</th>
                             <th onClick={() => handleSort("alder")}>Alder</th>
                             <th onClick={() => handleSort("klub")}>Klub</th>
+                            <th>Discipliner</th>
                             <th>Detaljer</th>
                         </tr>
                     </thead>
@@ -138,6 +140,13 @@ function ParticipantsList() {
                                 <td>{participant.køn}</td>
                                 <td>{participant.alder}</td>
                                 <td>{participant.klub}</td>
+                                <td>
+                                    {participant.resultater?.map((discipline) => (
+                                        <span key={discipline.disciplin.id} className="badge bg-primary mx-1">
+                                            {discipline.disciplin.navn}
+                                        </span>
+                                    ))}
+                                </td>
                                 <td>
                                     <NavLink to={`/participants/${participant.id}`} className="btn btn-primary">
                                         Detaljer
