@@ -46,7 +46,16 @@ const NewResults: React.FC = () => {
 
     const handleAddResult = () => {
         setResults([...results, currentResult]);
-        setCurrentResult({ resultattype: "", dato: "", resultatvalue: "", deltager: { id: 0 }, disciplin: { id: 0 } });
+        setCurrentResult({
+            ...currentResult,
+            resultatvalue: "",
+            deltager: { id: 0 },
+        });
+    };
+
+    const handleRemoveResult = (index: number) => {
+        const newResults = results.filter((_, i) => i !== index);
+        setResults(newResults);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -115,12 +124,14 @@ const NewResults: React.FC = () => {
                         ))}
                     </select>
                 </div>
-                <button type="button" className="btn btn-secondary" onClick={handleAddResult}>
-                    Tilføj nyt resultat
-                </button>
-                <button type="submit" className="btn btn-primary">
-                    Registrer resultater
-                </button>
+                <div className="mt-3">
+                    <button type="button" className="btn btn-secondary me-2" onClick={handleAddResult}>
+                        Tilføj resultat til liste
+                    </button>
+                    <button type="submit" className="btn btn-primary">
+                        Registrer liste resultater
+                    </button>
+                </div>
             </form>
 
             {results.length > 0 && (
@@ -128,10 +139,18 @@ const NewResults: React.FC = () => {
                     <h3>Tilføjede resultater:</h3>
                     <ul className="list-group">
                         {results.map((result, index) => (
-                            <li key={index} className="list-group-item">
-                                Disciplin: {discipliner.find((d) => d.id === result.disciplin?.id)?.navn}, Dato:{" "}
-                                {result.dato}, Resultatværdi: {result.resultatvalue}, Deltager:{" "}
-                                {deltagere.find((d) => d.id === result.deltager?.id)?.navn}
+                            <li
+                                key={index}
+                                className="list-group-item d-flex justify-content-between align-items-center"
+                            >
+                                <div>
+                                    Disciplin: {discipliner.find((d) => d.id === result.disciplin?.id)?.navn}, Dato:{" "}
+                                    {result.dato}, Resultatværdi: {result.resultatvalue}, Deltager:{" "}
+                                    {deltagere.find((d) => d.id === result.deltager?.id)?.navn}
+                                </div>
+                                <button className="btn btn-danger btn-sm" onClick={() => handleRemoveResult(index)}>
+                                    Fjern
+                                </button>
                             </li>
                         ))}
                     </ul>
