@@ -53,6 +53,7 @@ const DropDownClub: React.FC<DropDownClubProps> = ({ klub, onChange }) => {
                     size={klubber.length > 5 ? 5 : klubber.length} // Show up to 5 clubs at a time
                 >
                     <option value="">Skriv ny klub</option>
+
                     {klubber.map((klub, index) => (
                         <option key={index} value={klub}>
                             {klub}

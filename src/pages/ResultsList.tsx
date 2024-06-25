@@ -115,6 +115,7 @@ const ResultsList = () => {
                                         type="text"
                                         className="form-control"
                                         name="resultattype"
+                                        disabled
                                         value={editResult.resultattype}
                                         onChange={handleEditChange}
                                     />

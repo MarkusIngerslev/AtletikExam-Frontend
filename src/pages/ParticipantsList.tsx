@@ -56,7 +56,7 @@ function ParticipantsList() {
     return (
         <div className="container">
             <div className="row mt-5">
-                <div className="col-md-5 d-flex">
+                <div className="col-lg-5 d-flex">
                     <DropdownFilter
                         title="Køn"
                         options={[
@@ -99,7 +99,7 @@ function ParticipantsList() {
                         onFilterChange={(value) => setDisciplineFilter(value)}
                     />
                 </div>
-                <div className="col-md-3 my-auto">
+                <div className="col-lg-3 my-auto">
                     <p>
                         Aktive Filtre:
                         {genderFilter && <span className="badge bg-primary mx-1">{genderFilter}</span>}
@@ -109,7 +109,7 @@ function ParticipantsList() {
                     </p>
                 </div>
                 <div className="col-md-2">
-                    <h1 className="text-end">Deltagere</h1>
+                    <h3 className="text-end">Deltagere</h3>
                 </div>
                 <div className="col-md-2 my-auto">
                     <input
