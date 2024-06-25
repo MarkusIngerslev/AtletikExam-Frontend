@@ -301,6 +301,28 @@ async function deleteResultat(id: number) {
     }
 }
 
+// ----- Discipliner ----- //
+
+// Hent alle discipliner
+async function fetchDiscipliner() {
+    const url = `${endpoint}/api/discipliner`;
+    try {
+        const res = await fetch(url);
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        const data = await res.json();
+
+        // Tjek at data er korrekt
+        console.log(data);
+        // Data bliver returneret
+        return data;
+    } catch (error) {
+        console.error("An error occurred: ", error);
+        throw error;
+    }
+}
+
 // ----- Export ----- //
 
 // Export metoder for deltager
@@ -316,3 +338,6 @@ export {
     updateResultat,
     deleteResultat,
 };
+
+// Export metode for discipliner
+export { fetchDiscipliner };

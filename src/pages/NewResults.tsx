@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ResultatProps } from "../service/ResultatProps";
 import { DeltagerProps } from "../service/DeltagerProps";
 import { DisciplinProps } from "../service/DisciplinProps";
-import { createResultater, fetchDeltagere } from "../service/apiFacade";
+import { createResultater, fetchDeltagere, fetchDiscipliner } from "../service/apiFacade";
 
 const NewResults: React.FC = () => {
     const [results, setResults] = useState<ResultatProps[]>([
@@ -17,9 +17,7 @@ const NewResults: React.FC = () => {
         const fetchedDeltagere = await fetchDeltagere();
         setDeltagere(fetchedDeltagere);
 
-        const fetchedDiscipliner = deltagere.flatMap(
-            (deltager) => deltager?.resultater?.map((result) => result.disciplin) || []
-        );
+        const fetchedDiscipliner = await fetchDiscipliner();
         setDiscipliner(fetchedDiscipliner);
     };
 
@@ -46,7 +44,8 @@ const NewResults: React.FC = () => {
                 }
                 if (name === "resultattype") {
                     const selectedDisciplin = discipliner.find((d) => d.navn === value);
-                    return { ...result, resultattype: value, disciplin: { id: selectedDisciplin.id } };
+                    const disciplinId = selectedDisciplin ? selectedDisciplin.id : 0;
+                    return { ...result, resultattype: value, disciplin: { id: disciplinId } };
                 }
                 return { ...result, [name]: value };
             }
