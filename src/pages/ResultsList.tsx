@@ -29,14 +29,11 @@ const ResultsList = () => {
         if (editResult) {
             const { name, value } = e.target;
             setEditResult({ ...editResult, [name]: value });
-            console.log(editResult);
         }
     };
 
     const handleEditSubmit = async () => {
         if (editResult) {
-            console.log(editResult);
-
             await updateResultat(editResult);
             // Update local state after successful edit
             setParticipants(
@@ -60,7 +57,7 @@ const ResultsList = () => {
         }
     };
 
-    const handleSort = (column: keyof DeltagerProps) => {
+    const handleSort = (column: keyof ResultatProps) => {
         if (sortColumn === column) {
             setSortOrder(sortOrder === "asc" ? "desc" : "asc");
         } else {
@@ -69,7 +66,24 @@ const ResultsList = () => {
         }
     };
 
-    const sortedParticipants = [...participants].sort((a, b) => {
+    const filteredResults = participants.flatMap((participant) => {
+        return (
+            participant.resultater
+                ?.filter((result) => {
+                    return (
+                        (genderFilter ? participant.køn === genderFilter : true) &&
+                        (ageFilter
+                            ? participant.alder >= parseInt(ageFilter.split("-")[0]) &&
+                              participant.alder <= parseInt(ageFilter.split("-")[1])
+                            : true) &&
+                        (disciplineFilter ? result.disciplin.navn === disciplineFilter : true)
+                    );
+                })
+                .map((result) => ({ ...result, participant })) || []
+        );
+    });
+
+    const sortedResults = [...filteredResults].sort((a, b) => {
         if (a[sortColumn] < b[sortColumn]) {
             return sortOrder === "asc" ? -1 : 1;
         }
@@ -77,16 +91,6 @@ const ResultsList = () => {
             return sortOrder === "asc" ? 1 : -1;
         }
         return 0;
-    });
-
-    const filteredParticipants = sortedParticipants.filter((p) => {
-        return (
-            (genderFilter ? p.køn === genderFilter : true) &&
-            (ageFilter
-                ? p.alder >= parseInt(ageFilter.split("-")[0]) && p.alder <= parseInt(ageFilter.split("-")[1])
-                : true) &&
-            (disciplineFilter ? p.resultater && p.resultater.some((r) => r.disciplin.navn === disciplineFilter) : true)
-        );
     });
 
     return (
@@ -139,40 +143,38 @@ const ResultsList = () => {
                     <table className="table">
                         <thead>
                             <tr>
-                                <th onClick={() => handleSort("navn")}>Deltager</th>
-                                <th onClick={() => handleSort("Disciplin")}>Disciplin</th>
+                                <th onClick={() => handleSort("resultattype")}>Deltager</th>
+                                <th onClick={() => handleSort("resultattype")}>Disciplin</th>
                                 <th onClick={() => handleSort("dato")}>Dato</th>
-                                <th onClick={() => handleSort("resultat")}>Resultat</th>
+                                <th onClick={() => handleSort("resultatvalue")}>Resultat</th>
                                 <th>Handlinger</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredParticipants.map((deltager) =>
-                                deltager.resultater?.map((result) => (
-                                    <tr key={result.id}>
-                                        <td>{deltager.navn}</td>
-                                        <td>{result.resultattype}</td>
-                                        <td>{result.dato}</td>
-                                        <td>
-                                            {result.resultatvalue} {result.disciplin.resultattype}
-                                        </td>
-                                        <td>
-                                            <button
-                                                className="btn btn-warning"
-                                                onClick={() => {
-                                                    setEditResult(result);
-                                                }}
-                                            >
-                                                Rediger
-                                            </button>
-                                            {"  "}
-                                            <button className="btn btn-danger" onClick={() => handleDelete(result.id)}>
-                                                Slet
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))
-                            )}
+                            {sortedResults.map((result) => (
+                                <tr key={result.id}>
+                                    <td>{result.participant.navn}</td>
+                                    <td>{result.resultattype}</td>
+                                    <td>{result.dato}</td>
+                                    <td>
+                                        {result.resultatvalue} {result.disciplin.resultattype}
+                                    </td>
+                                    <td>
+                                        <button
+                                            className="btn btn-warning"
+                                            onClick={() => {
+                                                setEditResult(result);
+                                            }}
+                                        >
+                                            Rediger
+                                        </button>
+                                        {"  "}
+                                        <button className="btn btn-danger" onClick={() => handleDelete(result.id)}>
+                                            Slet
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
 
