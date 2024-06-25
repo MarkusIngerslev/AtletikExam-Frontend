@@ -11,17 +11,21 @@ function Navigation() {
                 <button
                     className="navbar-toggler"
                     type="button"
-                    data-toggle="collapse"
-                    data-target="#navbarNav"
-                    aria-controls="navbarNav"
-                    aria-expanded="false"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#navbarOffcanvasLg"
+                    aria-controls="navbarOffcanvasLg"
                     aria-label="Toggle navigation"
                 >
                     <span className="navbar-toggler-icon"></span>
                 </button>
 
-                <div className="collapse navbar-collapse">
-                    <ul className="navbar-nav mr-auto">
+                <div
+                    className="offcanvas offcanvas-start ps-3"
+                    tabIndex={-1}
+                    id="navbarOffcanvasLg"
+                    aria-labelledby="navbarOffcanvasLgLabel"
+                >
+                    <ul className="navbar-nav ">
                         <li className="nav-item">
                             <Link className="nav-link" to="/">
                                 Home
